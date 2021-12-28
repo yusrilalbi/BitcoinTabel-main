@@ -1,7 +1,7 @@
 var reloadData = 10; // dalam detik
 var timer;
 
-beli = document.querySelector('#beli');
+
 tes = document.querySelector('#tes');
 cari = document.querySelector('#cari');
 icon = document.querySelector('#icon');
@@ -26,7 +26,7 @@ function updateDataAPI() {
       for (var key in data.tickers) {
         if(key.includes(tes.value)){
         row = `<tr id=${key} onclick='exfun(id)' style="cursor: pointer;">
-              <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
+              <td style="color: blue;">${key.toUpperCase()}</td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
               <td> ${data.tickers[key].sell} </td>
@@ -36,6 +36,8 @@ function updateDataAPI() {
         $('#coins tr:last').after(row);
       }
     }
+      generate2()
+      masukkanGambar2()
       clearTimeout(timer)
       $('#timer').html(reloadData)
       setTimeout(updateDataAPI, reloadData * 1000)
@@ -62,7 +64,7 @@ function findAPI(){
       for (var key in data.tickers) {
         if(key.includes(tes.value)){
         row = `<tr id=${key} onclick='exfun(id)' style="cursor: pointer;">
-              <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
+              <td style="color: blue;"> ${key.toUpperCase()}</td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
               <td> ${data.tickers[key].sell} </td>
@@ -86,56 +88,7 @@ function updateTimer() {
     timer = setTimeout(updateTimer, 1000)
 }
 var relasi;
-function generate() {
 
-  $.ajax({
-    url: 'https://indodax.com/api/summaries',
-    success: function(data) {
-      var c = 0;
-      var d = 0;
-      $("#passing").html(`
-                    <tr>
-                    <th>Tukar</th>
-                    <th>Harga</th>
-                    <th>Beli</th>
-                    </tr>
-      `)
-      for (var key in data.tickers) {
-        if(tes.value==key){
-          relasi = key
-          
-          d = data.tickers[key].buy;
-          row = `<tr>
-              <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
-              <td> ${data.tickers[key].last} </td>
-              <td> ${data.tickers[key].buy} </td>
-            </tr>`
-        $('#passing tr:last').after(row);
-        }
-      }
-      
-    },
-    error: function(err) {
-      alert("Tidak bisa mengambil data API")
-    }
-  })
-}
-function masukkanGambar() {
-  console.log("masuk")
-  $.ajax({
-    url : "https://indodax.com/api/pairs",
-    success : function(data){
-      console.log(data[0].url_logo_png)
-      for(var keyGambar = 0; keyGambar< data.length; keyGambar++){
-        if(relasi==data[keyGambar].ticker_id)
-        icon.src = data[keyGambar].url_logo_png
-      }
-    },
-    error : function(err){
-        alert("data gambar gagal di ambil")
-    }
-  })
-}
 function generate2(){
   $.ajax({
     url: 'https://indodax.com/api/summaries',
@@ -154,7 +107,7 @@ function generate2(){
           relasi = key
           d = data.tickers[key].buy;
           row = `<tr>
-              <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
+              <td style="color: blue;"> ${key.toUpperCase()}</td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
             </tr>`
@@ -185,9 +138,11 @@ function masukkanGambar2(){
     }
   })
 }
+
 icon.src = "https://indodax.com/v2/logo/png/color/oneinch.png"
 
 updateDataAPI()
+
 var globalklik;
 function exfun(a) {
   console.log("bro")
@@ -202,5 +157,3 @@ $("#beli").on('click',function(){
   exfun(10)
 })
 cari.addEventListener('click',findAPI)
-// beli.addEventListener('click',generate)
-// beli.addEventListener('click',masukkanGambar)
