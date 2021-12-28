@@ -4,6 +4,8 @@ var timer;
 beli = document.querySelector('#beli');
 tes = document.querySelector('#tes');
 cari = document.querySelector('#cari');
+icon = document.querySelector('#icon');
+passing = document.querySelector('#passing')
 ambildata = () => {
   tes = document.querySelector('#tes')
 }
@@ -23,7 +25,7 @@ function updateDataAPI() {
                         </tr>`)
       for (var key in data.tickers) {
         if(key.includes(tes.value)){
-        row = `<tr>
+        row = `<tr id=${key} onclick='exfun(id)' style="cursor: pointer;">
               <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
@@ -59,7 +61,7 @@ function findAPI(){
                         </tr>`)
       for (var key in data.tickers) {
         if(key.includes(tes.value)){
-        row = `<tr>
+        row = `<tr id=${key} onclick='exfun(id)' style="cursor: pointer;">
               <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
@@ -83,39 +85,122 @@ function updateTimer() {
   if (a > 0)
     timer = setTimeout(updateTimer, 1000)
 }
-function buy() {
+var relasi;
+function generate() {
 
   $.ajax({
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
       var c = 0;
       var d = 0;
+      $("#passing").html(`
+                    <tr>
+                    <th>Tukar</th>
+                    <th>Harga</th>
+                    <th>Beli</th>
+                    </tr>
+      `)
       for (var key in data.tickers) {
         if(tes.value==key){
-          c = 1;
+          relasi = key
+          
           d = data.tickers[key].buy;
+          row = `<tr>
+              <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
+              <td> ${data.tickers[key].last} </td>
+              <td> ${data.tickers[key].buy} </td>
+            </tr>`
+        $('#passing tr:last').after(row);
         }
       }
-      if(c==1){
-        alert(`Selamat terbeli dengan harga ${d}`)
-      } 
-      else{
-        alert(`Gagal`)
-      }
+      
     },
     error: function(err) {
       alert("Tidak bisa mengambil data API")
     }
   })
 }
-updateDataAPI()
+function masukkanGambar() {
+  console.log("masuk")
+  $.ajax({
+    url : "https://indodax.com/api/pairs",
+    success : function(data){
+      console.log(data[0].url_logo_png)
+      for(var keyGambar = 0; keyGambar< data.length; keyGambar++){
+        if(relasi==data[keyGambar].ticker_id)
+        icon.src = data[keyGambar].url_logo_png
+      }
+    },
+    error : function(err){
+        alert("data gambar gagal di ambil")
+    }
+  })
+}
+function generate2(){
+  $.ajax({
+    url: 'https://indodax.com/api/summaries',
+    success: function(data) {
+      var c = 0;
+      var d = 0;
+      $("#passing").html(`
+                    <tr>
+                    <th>Tukar</th>
+                    <th>Harga</th>
+                    <th>Beli</th>
+                    </tr>
+      `)
+      for (var key in data.tickers) {
+        if(globalklik==key){
+          relasi = key
+          d = data.tickers[key].buy;
+          row = `<tr>
+              <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
+              <td> ${data.tickers[key].last} </td>
+              <td> ${data.tickers[key].buy} </td>
+            </tr>`
+        $('#passing tr:last').after(row);
+        }
+      }
+      
+    },
+    error: function(err) {
+      alert("Tidak bisa mengambil data API")
+    }
+  })
+}
 
-exfun = () => {
-  alert(tes.value)
+function masukkanGambar2(){
+  console.log("masuk")
+  $.ajax({
+    url : "https://indodax.com/api/pairs",
+    success : function(data){
+      console.log(data[0].url_logo_png)
+      for(var keyGambar = 0; keyGambar< data.length; keyGambar++){
+        if(relasi==data[keyGambar].ticker_id)
+        icon.src = data[keyGambar].url_logo_png
+      }
+    },
+    error : function(err){
+        alert("data gambar gagal di ambil")
+    }
+  })
+}
+icon.src = "https://indodax.com/v2/logo/png/color/oneinch.png"
+
+updateDataAPI()
+var globalklik;
+function exfun(a) {
+  console.log("bro")
+  globalklik = a
+  generate2()
+  masukkanGambar2()
 }
 $("#tes").on("change keyup paste", function(){
   findAPI()
 })
+$("#beli").on('click',function(){
+  exfun(10)
+})
 cari.addEventListener('click',findAPI)
-
-beli.addEventListener('click',buy)
+// beli.addEventListener('click',generate)
+// beli.addEventListener('click',masukkanGambar)
