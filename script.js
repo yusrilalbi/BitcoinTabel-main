@@ -22,7 +22,7 @@ function updateDataAPI() {
                           <th>Terendah 24h</th>
                         </tr>`)
       for (var key in data.tickers) {
-        if(key.includes(tes.value)||tes.value==""){
+        if(key.includes(tes.value)){
         row = `<tr>
               <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
               <td> ${data.tickers[key].last} </td>
@@ -58,7 +58,7 @@ function findAPI(){
                           <th>Terendah 24h</th>
                         </tr>`)
       for (var key in data.tickers) {
-        if(key.includes(tes.value)||tes.value==""){
+        if(key.includes(tes.value)){
         row = `<tr>
               <td><a href="https://yusrilalbi.github.io/BitcoinAPI/"> ${key.toUpperCase()}</a></td>
               <td> ${data.tickers[key].last} </td>
