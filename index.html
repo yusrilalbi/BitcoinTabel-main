@@ -1,62 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Bitcoin Tabel | API</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge"/>
+    <title>Card</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+
 </head>
-
 <body>
-  <p><b>Update data dalam: <span id="timer">0</span> Detik</b></p>
-  <input type="text" value="" id="tes">
-  <button id="cari" style="width: auto; height: 20px;">Cari</button>
-  <br><br>
-  <hr>
-<div class="grid-container" >
-<div class="item" >
-  <table id="coins">
-    <tr>
-      <th>Pairs</th>
-      <th>Harga</th>
-      <th>Beli</th>
-      <th>jual</th>
-      <th>Tertinggi 24h</th>
-      <th>Terendah 24h</th>
-    </tr>
-  </table>
-</div>
-<div class="item" >
-  <div class="grid-container">
-    <div class="itemk" >
-      <img id="icon" src="https://indodax.com/v2/logo/png/color/btc.png" style="width: 100px; height: auto;">
-      <table id="passing">
-        <tr id="saya" onclick='exfun(id)' style="cursor: pointer;">
-          <th>Pairs</th>
-          <th>Harga</th>
-          <th>Beli</th>
-        </tr>
-      </table>
-    </div>
-    <div class="itemk" id="tulisan">
-      <h1>Judul</h1>
-      <h3 >Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Quo veritatis quas fuga a natus! Harum illum dignissimos ad 
-        libero, ex corporis in ratione voluptates cupiditate temporibus 
-        sed quidem? Ratione, at.</h3>
-    </div>
-    <div class="itemk" id="BuySell" >
-      <button style="float: right;">Sell</button>
-      <span>&nbsp</span>
-      <button style="float: right;">Beli</button>
-    </div>
-  </div>
-  </div>
-</div>
-</div>
+    <div id="card">
+        <div id="card-content">
+            <div id="card-title">
+                <img src="Lord.png" width="100" height="100">
+                <h2>LOGIN</h2>
+                <div class="underline-title">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="script.js"></script>
+                </div>
+            </div>
+            <div class="form">
+                <label for="user-email" style="padding-top: 13px">&nbsp;
+                    Email
+                    </label>
+                    <input id="user-email" class="form-content" type="Email"
+                    name="Email" autocomplete="on" required/>
+                    <div class="form-border"></div>
+                    <label for="user-password" style="padding-top: 22px">&nbsp;Password
+                    </label>
+                    <input id="user-password" class="form-content" type="Password"
+                    name="Password"  required/>
+                    <div class="form-border"></div>
+                    <a href="#">
+                        <legend id="lupa-pass">Lupa password</legend>
+                    </a>
+                    <a style="text-align: center;" href="homepage.html" target=""><button id="submit-btn">Button</button></a>
+                    <a href="#" id="signup">Belum punya akun?</a>
+            </div>
+    
+            
+        </div>
+    </div>
+
 </body>
 </html>
