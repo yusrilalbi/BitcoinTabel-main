@@ -3,6 +3,7 @@ var reloadData = 30; // dalam detik
 var timer;
 var globalklik;
 var relasi;
+var arr = []
 
 //Take ID data
 tes = document.querySelector('#tes');
@@ -170,8 +171,9 @@ function toFixed(value, precision) {
   return result;
 }
 function passingTable(data){
+  var comp = -999, jum = 0;
   $('#coins').html(`<tr style="cursor: pointer;">
-                          <th onclick="sortTable(0)">Pairs&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(1)">Pairs&#x25b4;&#x25be;</th>
                           <th onclick="sortTable(1)">Harga&#x25b4;&#x25be;</th> 
                           <th onclick="sortTable(2)">Beli&#x25b4;&#x25be;</th> 
                           <th onclick="sortTable(3)">jual&#x25b4;&#x25be;</th> 
@@ -181,9 +183,15 @@ function passingTable(data){
                         </tr>`)
       for (var key in data.tickers) {
         if(key.includes(tes.value)){
-        var tx = data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].buy*100-100
+        if(key.slice(-4,-3)=="_")
+          var tx = data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].buy*100-100
+        else
+          var tx = (parseFloat(data.tickers[key].high)+parseFloat(data.tickers[key].low))/2/data.tickers[key].buy*100-100
+        
+        arr.push([key,data.tickers[key].buy,data.tickers[key].sell,tx])
+
         tx = tx.toString().slice(0,4)
-        row = `<tr id=${key} onclick='klikTable(id)' style="cursor: pointer;">
+        row = `<tr id=${key} onclick='klikTable(id)' style="cursor: pointer; class="item">
               <td style="color: blue;">${key.toUpperCase()}</td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
@@ -191,23 +199,61 @@ function passingTable(data){
               <td> ${data.tickers[key].high} </td>
               <td> ${data.tickers[key].low} </td>`
         if(tx>0)
-        row = row + `<td style="color: green"><b> ${tx}% </b></td>
+        row = row + `<td style="color: green"><b> ${tx}%</b></td>
         </tr>`
         else if(tx==0)
-        row = row + `<td style="color: grey"><b> ${tx}% </b></td>
+        row = row + `<td style="color: grey"><b> ${tx}%</b></td>
         </tr>`
         else
-        row = row + `<td style="color: red"><b> ${tx}% </b></td>
+        row = row + `<td style="color: red"><b> ${tx}%</b></td>
         </tr>`
         $('#coins tr:last').after(row);
       }
     }
+    arr.sort(function(a,b) {
+      return a[3]-b[3]
+  });
+    arr.reverse()
+    $('#top').html(`<tr>
+                      <th>Pairs</th>
+                      <th>Harga Beli</th>
+                      <th>Harga Jual</th>
+                      <th>Persentase</th>
+                    </tr>`)
+    for(i=0; i<10; i++){
+      row = `<tr id=${arr[i][0]} onclick='klikTable(id)' style="cursor: pointer; class="item">
+              <td style="color: blue;">${arr[i][0].toUpperCase()}</td>
+              <td> ${arr[i][1]} </td>
+              <td> ${arr[i][2]} </td>
+              <td style="color: green"><b> ${toFixed(arr[i][3],2)}%</b></td>
+              </tr>`
+              $('#top tr:last').after(row);
+    }
+    $('#loser').html(`<tr>
+                        <th style="background-color: red;">Pairs</th>
+                        <th style="background-color: red;">Harga</th>
+                        <th style="background-color: red;">Beli</th>
+                        <th style="background-color: red;">Persentase</th>
+                      </tr>`)
+    arr.reverse()
+    for(i=0; i<10; i++){
+      row = `<tr id=${arr[i][0]} onclick='klikTable(id)' style="cursor: pointer; class="item">
+              <td style="color: blue;">${arr[i][0].toUpperCase()}</td>
+              <td> ${arr[i][1]} </td>
+              <td> ${arr[i][2]} </td>
+              <td style="color: red"><b> ${toFixed(arr[i][3],2)}%</b></td>
+              </tr>`
+              $('#loser tr:last').after(row);
+    }
+}
+function sorting() {
+                
 }
 
 //Fungsi Awal
 icon.src = "https://indodax.com/v2/logo/png/color/btc.png"
 updateDataAPI()
-
+sorting()
 //when Click - Change - Trigerred Condition
 $("#tes").on("change keyup paste", function(){
   findAPI()
