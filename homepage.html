@@ -15,10 +15,15 @@
 <body>
   <!-- Sidebar -->
 <div class="w3-sidebar w3-bar-block w3-border-right" style="display:none; background-color: #04AA6D;" id="mySidebar">
-  <button onclick="w3_close()" class="w3-bar-item w3-large" style="background-color: red;;">Close &times;</button>
-  <li class="w3-bar-item w3-button">Nama: UserName</li>
-  <li class="w3-bar-item w3-button">Email: UserName@gmail.com</li>
-  <a href="profil.html" class="w3-bar-item w3-button"><i>Cek Profile</i></a>
+  <button onclick="w3_close()" class="w3-bar-item w3-large w3-button" style="background-color: red;;">Close &times;</button>
+  <div>
+    <img style="width: 100px; margin-left: 45px; margin-top: 10px;" src="Lord.png">
+    <hr>
+    <li class="w3-bar-item ">Nama: UserName</li>
+    <li class="w3-bar-item ">Email: UserName@gmail.com</li>
+  </div>
+  <hr>
+  <a href="profil.html" class="w3-bar-item w3-button" style="background-color: #4abe4d;"><b>Cek Profile</b></a>
 </div>
 
 <!-- Page Content -->
@@ -48,11 +53,12 @@ function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
 }
 </script>
+  <div style="padding: 20px;">
     <p><b>Update data dalam: <span id="timer">0</span> Detik</b></p>
     <input type="text" value="" id="tes">
     <button id="cari" style="width: auto; height: auto;">Cari</button>
     <br>
-    <hr>
+  </div>
   <div class="grid-container" >
   <div class="item" >
     <table id="coins">
@@ -96,8 +102,6 @@ function w3_close() {
   </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="script.js">
-  
-</script>
+<script src="script.js"></script>
 </body>
 </html>
