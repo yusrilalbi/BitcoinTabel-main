@@ -1,57 +1,29 @@
-var reloadData = 10; // dalam detik
+//Deklarasi Variabel
+var reloadData = 30; // dalam detik
 var timer;
+var globalklik;
+var relasi;
 
-
+//Take ID data
 tes = document.querySelector('#tes');
 cari = document.querySelector('#cari');
 icon = document.querySelector('#icon');
 passing = document.querySelector('#passing')
+
+//All Function Declaration
 ambildata = () => {
   tes = document.querySelector('#tes')
 }
 function updateDataAPI() {
-
   $.ajax({
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
-      var row;
-      $('#coins').html(`<tr style="cursor: pointer;">
-                          <th onclick="sortTable(0)">Pairs</th>
-                          <th onclick="sortTable(1)">Harga</th> 
-                          <th onclick="sortTable(2)">Beli</th> 
-                          <th onclick="sortTable(3)">jual</th> 
-                          <th onclick="sortTable(4)">Tertinggi 24h</th>
-                          <th onclick="sortTable(5)">Terendah 24h</th>
-                          <th onclick="sortTable(6)">Persentase</th>
-                        </tr>`)
-      for (var key in data.tickers) {
-        if(key.includes(tes.value)){
-        var tx = data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].buy*100-100
-        tx = tx.toString().slice(0,4)
-        row = `<tr id=${key} onclick='exfun(id)' style="cursor: pointer;">
-              <td style="color: blue;">${key.toUpperCase()}</td>
-              <td> ${data.tickers[key].last} </td>
-              <td> ${data.tickers[key].buy} </td>
-              <td> ${data.tickers[key].sell} </td>
-              <td> ${data.tickers[key].high} </td>
-              <td> ${data.tickers[key].low} </td>`
-        if(tx>0)
-        row = row + `<td style="color: green"><b> ${tx}% </b></td>
-        </tr>`
-        else if(tx==0)
-        row = row + `<td style="color: grey"><b> ${tx}% </b></td>
-        </tr>`
-        else
-        row = row + `<td style="color: red"><b> ${tx}% </b></td>
-        </tr>`
-        $('#coins tr:last').after(row);
-      }
-    }
+      passingTable(data)
       generate2()
       masukkanGambar2()
       clearTimeout(timer)
       $('#timer').html(reloadData)
-      setTimeout(updateDataAPI, 10000)
+      setTimeout(updateDataAPI, reloadData*1000)
       updateTimer()
     },
     error: function(err) {
@@ -64,44 +36,19 @@ function findAPI(){
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
       var row;
-      $('#coins').html(`<tr style="cursor: pointer;">
-                          <th onclick="sortTable(0)">Pairs</th>
-                          <th onclick="sortTable(1)">Harga</th> 
-                          <th onclick="sortTable(2)">Beli</th> 
-                          <th onclick="sortTable(3)">jual</th> 
-                          <th onclick="sortTable(4)">Tertinggi 24h</th>
-                          <th onclick="sortTable(5)">Terendah 24h</th>
-                          <th onclick="sortTable(6)">Persentase</th>
-                        </tr>`)
-      for (var key in data.tickers) {
-        if(key.includes(tes.value)){
-        row = `<tr id=${key} onclick='exfun(id)' style="cursor: pointer;">
-              <td style="color: blue;"> ${key.toUpperCase()}</td>
-              <td> ${data.tickers[key].last} </td>
-              <td> ${data.tickers[key].buy} </td>
-              <td> ${data.tickers[key].sell} </td>
-              <td> ${data.tickers[key].high} </td>
-              <td> ${data.tickers[key].low} </td>
-              <td style="color: green"> 100% </td>
-            </tr>`
-        $('#coins tr:last').after(row);
-      }
-    }
+      passingTable(data)
     },
     error: function(err) {
       alert("Tidak bisa mengambil data API")
     }
   })
 }
-  
 function updateTimer() {
   a = parseInt($('#timer').html())
   $('#timer').html(a - 1)
   if (a > 0)
     timer = setTimeout(updateTimer, 1000)
 }
-var relasi;
-
 function generate2(){
   $.ajax({
     url: 'https://indodax.com/api/summaries',
@@ -134,7 +81,6 @@ function generate2(){
     }
   })
 }
-
 function masukkanGambar2(){
   console.log("masuk")
   $.ajax({
@@ -151,24 +97,11 @@ function masukkanGambar2(){
     }
   })
 }
-
-icon.src = "https://indodax.com/v2/logo/png/color/oneinch.png"
-
-updateDataAPI()
-
-var globalklik;
-function exfun(a) {
+function klikTable(a) {
   globalklik = a
   generate2()
   masukkanGambar2()
 }
-$("#tes").on("change keyup paste", function(){
-  findAPI()
-})
-$("#beli").on('click',function(){
-  exfun(10)
-})
-cari.addEventListener('click',findAPI)
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById("coins");
@@ -236,3 +169,50 @@ function toFixed(value, precision) {
   }
   return result;
 }
+function passingTable(data){
+  $('#coins').html(`<tr style="cursor: pointer;">
+                          <th onclick="sortTable(0)">Pairs&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(1)">Harga&#x25b4;&#x25be;</th> 
+                          <th onclick="sortTable(2)">Beli&#x25b4;&#x25be;</th> 
+                          <th onclick="sortTable(3)">jual&#x25b4;&#x25be;</th> 
+                          <th onclick="sortTable(4)">Tertinggi 24h&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(5)">Terendah 24h&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(6)">Persentase&#x25b4;&#x25be;</th>
+                        </tr>`)
+      for (var key in data.tickers) {
+        if(key.includes(tes.value)){
+        var tx = data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].buy*100-100
+        tx = tx.toString().slice(0,4)
+        row = `<tr id=${key} onclick='klikTable(id)' style="cursor: pointer;">
+              <td style="color: blue;">${key.toUpperCase()}</td>
+              <td> ${data.tickers[key].last} </td>
+              <td> ${data.tickers[key].buy} </td>
+              <td> ${data.tickers[key].sell} </td>
+              <td> ${data.tickers[key].high} </td>
+              <td> ${data.tickers[key].low} </td>`
+        if(tx>0)
+        row = row + `<td style="color: green"><b> ${tx}% </b></td>
+        </tr>`
+        else if(tx==0)
+        row = row + `<td style="color: grey"><b> ${tx}% </b></td>
+        </tr>`
+        else
+        row = row + `<td style="color: red"><b> ${tx}% </b></td>
+        </tr>`
+        $('#coins tr:last').after(row);
+      }
+    }
+}
+
+//Fungsi Awal
+icon.src = "https://indodax.com/v2/logo/png/color/btc.png"
+updateDataAPI()
+
+//when Click - Change - Trigerred Condition
+$("#tes").on("change keyup paste", function(){
+  findAPI()
+})
+$("#beli").on('click',function(){
+  klikTable(10)
+})
+cari.addEventListener('click',findAPI)
