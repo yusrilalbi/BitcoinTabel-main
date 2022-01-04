@@ -20,8 +20,7 @@ function updateDataAPI() {
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
       passingTable(data)
-      generate2()
-      masukkanGambar2()
+      passingToPembayaran()
       clearTimeout(timer)
       $('#timer').html(reloadData)
       setTimeout(updateDataAPI, reloadData*1000)
@@ -50,7 +49,7 @@ function updateTimer() {
   if (a > 0)
     timer = setTimeout(updateTimer, 1000)
 }
-function generate2(){
+function passingToPembayaran(){
   $.ajax({
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
@@ -81,9 +80,6 @@ function generate2(){
       alert("Tidak bisa mengambil data API")
     }
   })
-}
-function masukkanGambar2(){
-  console.log("masuk")
   $.ajax({
     url : "https://indodax.com/api/pairs",
     success : function(data){
@@ -100,8 +96,7 @@ function masukkanGambar2(){
 }
 function klikTable(a) {
   globalklik = a
-  generate2()
-  masukkanGambar2()
+  passingToPembayaran()
 }
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -126,18 +121,52 @@ function sortTable(n) {
       y = rows[i + 1].getElementsByTagName("TD")[n];
       /*check if the two rows should switch place,
       based on the direction, asc or desc:*/
+      if(n==0){
+        if (dir == "asc") {
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch= true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      else if(n==6){
+        if (dir == "asc") {
+          
+          if (parseFloat(x.innerHTML.slice(3,-4)) > parseFloat(y.innerHTML.slice(3,-4))) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch= true;
+            break;
+          }
+        } else if (dir == "desc") {
+          if (parseFloat(x.innerHTML.slice(3,-4)) < parseFloat(y.innerHTML.slice(3,-4))) {
+            //if so, mark as a switch and break the loop:
+            shouldSwitch = true;
+            break;
+          }
+        }
+      }
+      else{
       if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        
+        if (parseFloat(x.innerHTML.toLowerCase()) > parseFloat(y.innerHTML.toLowerCase())) {
           //if so, mark as a switch and break the loop:
           shouldSwitch= true;
           break;
         }
       } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        if (parseFloat(x.innerHTML.toLowerCase()) < parseFloat(y.innerHTML.toLowerCase())) {
           //if so, mark as a switch and break the loop:
           shouldSwitch = true;
           break;
         }
+      }
       }
     }
     if (shouldSwitch) {
@@ -173,7 +202,7 @@ function toFixed(value, precision) {
 function passingTable(data){
   var comp = -999, jum = 0;
   $('#coins').html(`<tr style="cursor: pointer;">
-                          <th onclick="sortTable(1)">Pairs&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(0)">Pairs&#x25b4;&#x25be;</th>
                           <th onclick="sortTable(1)">Harga&#x25b4;&#x25be;</th> 
                           <th onclick="sortTable(2)">Beli&#x25b4;&#x25be;</th> 
                           <th onclick="sortTable(3)">jual&#x25b4;&#x25be;</th> 
@@ -184,9 +213,9 @@ function passingTable(data){
       for (var key in data.tickers) {
         if(key.includes(tes.value)){
         if(key.slice(-4,-3)=="_")
-          var tx = data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].buy*100-100
+          var tx = 100 - data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].last*100
         else
-          var tx = (parseFloat(data.tickers[key].high)+parseFloat(data.tickers[key].low))/2/data.tickers[key].buy*100-100
+          var tx = 100 - (parseFloat(data.tickers[key].high)+parseFloat(data.tickers[key].low))/2/data.tickers[key].buy*100
         
         arr.push([key,data.tickers[key].buy,data.tickers[key].sell,tx])
 
@@ -245,15 +274,12 @@ function passingTable(data){
               </tr>`
               $('#loser tr:last').after(row);
     }
-}
-function sorting() {
-                
+    arr = []
 }
 
 //Fungsi Awal
 icon.src = "https://indodax.com/v2/logo/png/color/btc.png"
 updateDataAPI()
-sorting()
 //when Click - Change - Trigerred Condition
 $("#tes").on("change keyup paste", function(){
   findAPI()
@@ -262,3 +288,22 @@ $("#beli").on('click',function(){
   klikTable(10)
 })
 cari.addEventListener('click',findAPI)
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 4000); // Change image every 2 seconds
+}
