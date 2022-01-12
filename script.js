@@ -1,7 +1,7 @@
 //Deklarasi Variabel
 var reloadData = 30; // dalam detik
 var timer;
-var globalklik;
+var globalklik = "btc_idr";
 var relasi;
 var arr = []
 
@@ -20,7 +20,6 @@ function updateDataAPI() {
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
       passingTable(data)
-      passingToPembayaran()
       clearTimeout(timer)
       $('#timer').html(reloadData)
       setTimeout(updateDataAPI, reloadData*1000)
@@ -36,7 +35,7 @@ function findAPI(){
     url: 'https://indodax.com/api/summaries',
     success: function(data) {
       var row;
-      passingTable(data)
+      passingByFind(data)
     },
     error: function(err) {
       alert("Tidak bisa mengambil data API")
@@ -72,6 +71,14 @@ function passingToPembayaran(){
               <td> ${data.tickers[key].buy} </td>
             </tr>`
         $('#passing tr:last').after(row);
+        $('#judul').html(`<b>${data.tickers[key].name}</b>`)
+        $('#detail').html(`Koin dengan pairs <b>${key.toUpperCase()}</b> atau yang memiliki nama formal 
+        <b>${data.tickers[key].name}</b> 
+        adalah koin luar biasa yang dapat mendatangkan keuntungan berkali kali lipat 
+        sedang memiliki harga beli <span style="color: green"><b>${data.tickers[key].buy}</b></span> dan 
+        memiliki harga jual <span style="color: red"><b>${data.tickers[key].sell}</b></span> pada 
+        hari ini sudah terjadi transaksi jual beli sebanyak <span style="color: blue"><b>${toFixed(data.tickers[key].vol_idr/data.tickers[key].last,2)}</b></span>
+        atau jika dirupiahkan sama dengan <span style="color: blue"><b>${data.tickers[key].vol_idr}</b></span>`)
         }
       }
       
@@ -97,6 +104,14 @@ function passingToPembayaran(){
 function klikTable(a) {
   globalklik = a
   passingToPembayaran()
+  console.log(globalklik)
+  localStorage.setItem( 'objectToPass', globalklik );
+  location.href='halamanbeli.html';
+}
+function klikTable2(a) {
+  globalklik = a
+  passingToPembayaran()
+  console.log(globalklik)
 }
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -220,7 +235,7 @@ function passingTable(data){
         arr.push([key,data.tickers[key].buy,data.tickers[key].sell,tx])
 
         tx = tx.toString().slice(0,4)
-        row = `<tr id=${key} onclick='klikTable(id)' style="cursor: pointer; class="item">
+        row = `<tr id=${key} onclick='klikTable(id);' style="cursor: pointer; class="item">
               <td style="color: blue;">${key.toUpperCase()}</td>
               <td> ${data.tickers[key].last} </td>
               <td> ${data.tickers[key].buy} </td>
@@ -276,21 +291,61 @@ function passingTable(data){
     }
     arr = []
 }
+function passingByFind(data){
+  $('#coins').html(`<tr style="cursor: pointer;">
+                          <th onclick="sortTable(0)">Pairs&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(1)">Harga&#x25b4;&#x25be;</th> 
+                          <th onclick="sortTable(2)">Beli&#x25b4;&#x25be;</th> 
+                          <th onclick="sortTable(3)">jual&#x25b4;&#x25be;</th> 
+                          <th onclick="sortTable(4)">Tertinggi 24h&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(5)">Terendah 24h&#x25b4;&#x25be;</th>
+                          <th onclick="sortTable(6)">Persentase&#x25b4;&#x25be;</th>
+                        </tr>`)
+      for (var key in data.tickers) {
+        if(key.includes(tes.value)){
+        if(key.slice(-4,-3)=="_")
+          var tx = 100 - data.prices_24h[key.slice(0,-4)+key.slice(-3)]/data.tickers[key].last*100
+        else
+          var tx = 100 - (parseFloat(data.tickers[key].high)+parseFloat(data.tickers[key].low))/2/data.tickers[key].buy*100
+        
+        arr.push([key,data.tickers[key].buy,data.tickers[key].sell,tx])
 
+        tx = tx.toString().slice(0,4)
+        row = `<tr id=${key} onclick='klikTable(id);' style="cursor: pointer; class="item">
+              <td style="color: blue;">${key.toUpperCase()}</td>
+              <td> ${data.tickers[key].last} </td>
+              <td> ${data.tickers[key].buy} </td>
+              <td> ${data.tickers[key].sell} </td>
+              <td> ${data.tickers[key].high} </td>
+              <td> ${data.tickers[key].low} </td>`
+        if(tx>0)
+        row = row + `<td style="color: green"><b> ${tx}%</b></td>
+        </tr>`
+        else if(tx==0)
+        row = row + `<td style="color: grey"><b> ${tx}%</b></td>
+        </tr>`
+        else
+        row = row + `<td style="color: red"><b> ${tx}%</b></td>
+        </tr>`
+        $('#coins tr:last').after(row);
+      }
+    }
+}
+function myFunction() {
+  let text = "Press a button!\nEither OK or Cancel.";
+  if ((confirm(text) == true)) 
+    open("detail.html","_self")
+  }
 //Fungsi Awal
-icon.src = "https://indodax.com/v2/logo/png/color/btc.png"
-updateDataAPI()
 //when Click - Change - Trigerred Condition
 $("#tes").on("change keyup paste", function(){
   findAPI()
 })
 $("#beli").on('click',function(){
-  klikTable(10)
+  
+  klikTable("btc_idr")
 })
-cari.addEventListener('click',findAPI)
 var slideIndex = 0;
-showSlides();
-
 function showSlides() {
   var i;
   var slides = document.getElementsByClassName("mySlides");

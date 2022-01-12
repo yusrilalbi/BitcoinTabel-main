@@ -14,10 +14,10 @@
 
 <body>
   <!-- Sidebar -->
-<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none; background-color: #04AA6D;" id="mySidebar">
+<div class="w3-sidebar w3-bar-block w3-border-right" style="width: 300px; display:none; background-color: #04AA6D;" id="mySidebar">
   <button onclick="w3_close()" class="w3-bar-item w3-large w3-button" style="background-color: red;;">Close &times;</button>
-  <div>
-    <img style="width: 100px; margin-left: 45px; margin-top: 10px;" src="Lord.png">
+  <div style="text-align: center;">
+    <img style="width: 200px; margin-top: 10px;" src="Lord.png">
     <hr>
     <li class="w3-bar-item ">Nama: UserName</li>
     <li class="w3-bar-item ">Email: UserName@gmail.com</li>
@@ -34,7 +34,7 @@
     <div class="topnav">
         <a class="active" href="homepage.html">Home</a>
         <a href="profil.html">Profil</a>
-        <a href="halamanbeli.html">Beli</a>
+        <a onclick="alert('Silahkan Pilih Koin')">Beli</a>
     </div>
   </div>
 </div>
@@ -96,31 +96,7 @@ function w3_close() {
     </table>
   </div>
   <div class="item" >
-    <div class="grid-container">
-      <div class="itemk" >
-        <img id="icon" src="https://indodax.com/v2/logo/png/color/btc.png" style="width: 100px; height: auto;">
-        <table id="passing">
-          <tr>
-            <th>Pairs</th>
-            <th>Harga</th>
-            <th>Beli</th>
-          </tr>
-        </table>
-      </div>
-      <div class="itemk" id="tulisan">
-        <h1>Judul</h1>
-        <h3 >Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-          Quo veritatis quas fuga a natus! Harum illum dignissimos ad 
-          libero, ex corporis in ratione voluptates cupiditate temporibus 
-          sed quidem? Ratione, at.</h3>
-      </div>
-      <div class="itemk" id="BuySell" >
-        <button style="float: right;">Sell</button>
-        <span>&nbsp</span>
-        <button style="float: right;">Beli</button>
-      </div>
-    </div>
-    <h1 style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"> Top Performance</h1>
+    <h1 style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; "> Top Performance</h1>
     <table id="top">
       <tr>
         <th>Pairs</th>
@@ -145,6 +121,12 @@ function w3_close() {
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
-<script src="script.js"></script>
+<script src="script.js">
+</script>
+<script>
+  showSlides()
+  console.log(globalklik)
+  updateDataAPI()
+</script>
 </body>
 </html>
